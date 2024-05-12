@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Option;
 use App\Models\Poll;
+use App\Models\PollUserOption;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -26,7 +27,6 @@ class PollController extends Controller
 
     public function show(Poll $poll)
     {
-//        dd($poll->toArray());
         return Inertia::render('Polls/Show', ['poll' => $poll->load('options')]);
     }
 
@@ -46,11 +46,21 @@ class PollController extends Controller
         return redirect()->route('polls.index');
     }
 
-    public function vote(Poll $poll, Option $option)
+    public function vote(Request $request,Poll $poll, Option $option)
     {
-//        $poll->options()->updateExistingPivot($option->id, ['votes' => $option->pivot->votes + 1]);
+        $user = auth()->user();
+        $existingVote= PollUserOption::where('poll_id', $poll->id)->where('user_id', $user->id)->first();
 
-//        return redirect()->route('polls.show', $poll);
+        if ($existingVote) {
+            return redirect()->back()->withErrors(['You have already voted']);
+        }
+
+        PollUserOption::create([
+            'poll_id' => $poll->id,
+            'option_id' => $option->id,
+            'user_id' => $user->id,
+        ]);
+
         return Inertia::render('polls.results', ['poll' => $poll]);
     }
 }

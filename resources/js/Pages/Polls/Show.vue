@@ -7,8 +7,7 @@ const props = defineProps({ poll: Object })
 
 const selectedOption = ref(null);
 const vote = async () => {
-  console.log('voting for selectedOption.value', selectedOption.value);
-  console.log('poll.id', props.poll.id);
+  console.log('voting for selectedOption.value', selectedOption.value, 'in poll.id', props.poll.id);
   await axios.post(route('polls.vote', {poll: props.poll.id, option: selectedOption.value}), {option: selectedOption.value});
 };
 </script>
