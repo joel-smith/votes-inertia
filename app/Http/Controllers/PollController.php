@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Option;
 use App\Models\Poll;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -45,9 +46,11 @@ class PollController extends Controller
         return redirect()->route('polls.index');
     }
 
-    //to-do: dunno if needed
-    public function options(Poll $poll)
+    public function vote(Poll $poll, Option $option)
     {
-        return Inertia::render('Polls/Options', ['poll' => $poll]);
+//        $poll->options()->updateExistingPivot($option->id, ['votes' => $option->pivot->votes + 1]);
+
+//        return redirect()->route('polls.show', $poll);
+        return Inertia::render('polls.results', ['poll' => $poll]);
     }
 }
