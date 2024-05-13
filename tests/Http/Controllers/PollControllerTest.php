@@ -3,11 +3,21 @@
 namespace Tests\Http\Controllers;
 
 use App\Models\Poll;
+use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PollControllerTest extends TestCase
 {
+
+    public User $user;
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+    }
+
     use WithFaker;
     public function test_it_can_create_a_poll()
     {
