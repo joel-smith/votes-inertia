@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('poll_id')->constrained()->onDelete('cascade');
             $table->string('title');
+            $table->integer('votes')->default(0);
             $table->timestamps();
         });
     }

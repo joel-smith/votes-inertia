@@ -13,6 +13,7 @@ class Option extends Model
 
     protected $fillable = [
         'title',
+        'votes',
     ];
 
     public function poll() : BelongsTo

@@ -27,6 +27,16 @@ class PollController extends Controller
 
     public function show(Poll $poll)
     {
+        $user = auth()->user();
+        $existingVote= PollUserOption::where('poll_id', $poll->id)->where('user_id', $user->id)->first();
+
+        if ($existingVote) {
+
+            return Inertia::render('Polls/Results', [
+                'poll' => $poll->load('options')
+            ]);
+        }
+
         return Inertia::render('Polls/Show', ['poll' => $poll->load('options')]);
     }
 
@@ -46,14 +56,19 @@ class PollController extends Controller
         return redirect()->route('polls.index');
     }
 
-    public function vote(Request $request,Poll $poll, Option $option)
+    public function vote(Poll $poll, Option $option)
     {
         $user = auth()->user();
         $existingVote= PollUserOption::where('poll_id', $poll->id)->where('user_id', $user->id)->first();
 
         if ($existingVote) {
-            return redirect()->back()->withErrors(['You have already voted']);
+            return Inertia::render('polls.results', [
+                'poll' => $poll->load('options')
+            ]);
         }
+
+        $option->increment('votes');
+        $option->save();
 
         PollUserOption::create([
             'poll_id' => $poll->id,
@@ -61,6 +76,8 @@ class PollController extends Controller
             'user_id' => $user->id,
         ]);
 
-        return Inertia::render('polls.results', ['poll' => $poll]);
+        event(new PollVoted($user, $poll, $option));
+
+        return Inertia::render('polls.results', ['poll' => $poll->load('options')]);
     }
 }

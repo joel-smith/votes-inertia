@@ -2,6 +2,7 @@
 
 import {ref} from "vue";
 import axios from "axios";
+import {InertiaLink} from "@inertiajs/inertia-vue3";
 
 const props = defineProps({ poll: Object })
 
@@ -25,6 +26,7 @@ const vote = async () => {
     </ul>
     <button @click="vote" :disabled="!selectedOption" class="block w-full py-2 px-4 mt-4 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Vote</button>
     <small v-if="!selectedOption" class="block text-red-500 mt-2">Please select an option</small>
+    <InertiaLink :href="route('polls.index')" class="text-blue-500 hover:text-blue-700">Back to all polls</InertiaLink>
   </div>
 </template>
 
