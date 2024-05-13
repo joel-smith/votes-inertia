@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PollVoted;
 use App\Models\Option;
 use App\Models\Poll;
 use App\Models\PollUserOption;
