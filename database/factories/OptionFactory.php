@@ -21,7 +21,7 @@ class OptionFactory extends Factory
     {
         return [
             'poll_id' => Poll::factory(),
-            'title' => $this->faker->sentence(),
+            'value' => $this->faker->sentence(),
         ];
     }
 }

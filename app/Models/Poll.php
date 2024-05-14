@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Poll extends Model
 {
@@ -13,7 +14,7 @@ class Poll extends Model
         'title',
     ];
 
-    public function options()
+    public function options() : HasMany
     {
         return $this->hasMany(Option::class);
     }

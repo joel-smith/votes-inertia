@@ -7,6 +7,7 @@ use App\Models\Option;
 use App\Models\Poll;
 use App\Models\PollUserOption;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PollController extends Controller
@@ -20,19 +21,28 @@ class PollController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|min:3|max:255',
+            'options' => 'required|array|min:2',
+            'options.*.value' => 'required|string|min:2|max:255',
         ]);
-        Poll::create($request->only('title'));
-        return redirect()->route('polls.index');
+
+        $poll = Poll::create($request->only('title'));
+
+        foreach ($request->options as $option) {
+            Option::create([
+                'poll_id' => $poll->id,
+                'value' => $option['value'],
+                ]
+            );
+        }
+
+        return Inertia::render('Polls/Show', ['poll' => $poll->load('options')]);
+//        return redirect()->route('polls.show', $poll);
     }
 
     public function show(Poll $poll)
     {
-        $user = auth()->user();
-        $existingVote= PollUserOption::where('poll_id', $poll->id)->where('user_id', $user->id)->first();
-
-        if ($existingVote) {
-
+        if ($this->isExistingVote($poll)) {
             return Inertia::render('Polls/Results', [
                 'poll' => $poll->load('options')
             ]);
@@ -48,22 +58,21 @@ class PollController extends Controller
         ]);
 
         $poll->update($request->only('title'));
-        return redirect()->route('polls.index');
+        return Inertia::render('Polls/Show', ['poll' => $poll->load('options')]);
     }
 
     public function destroy(Poll $poll)
     {
         $poll->delete();
-        return redirect()->route('polls.index');
+        return Inertia::render('Polls/Index');
     }
 
     public function vote(Poll $poll, Option $option)
     {
         $user = auth()->user();
-        $existingVote= PollUserOption::where('poll_id', $poll->id)->where('user_id', $user->id)->first();
 
-        if ($existingVote) {
-            return Inertia::render('polls.results', [
+        if ($this->isExistingVote($poll)) {
+            return Inertia::render('Polls/Results', [
                 'poll' => $poll->load('options')
             ]);
         }
@@ -79,6 +88,22 @@ class PollController extends Controller
 
         event(new PollVoted($user, $poll, $option));
 
-        return Inertia::render('polls.results', ['poll' => $poll->load('options')]);
+        return Inertia::render('Polls/Results', [
+            'poll' => $poll->load('options')
+        ]);
+    }
+
+    public function results(Poll $poll)
+    {
+        return Inertia::render('Polls/Results', [
+            'poll' => $poll->load('options')
+        ]);
+    }
+
+    private function isExistingVote($poll)
+    {
+        $user = auth()->user();
+        $existingVote = PollUserOption::where('poll_id', $poll->id)->where('user_id', $user->id)->first();
+        return $existingVote;
     }
 }

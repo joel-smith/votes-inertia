@@ -21,7 +21,7 @@ const optionVotesPercentage = (option) => {
     <ul>
       <li v-for="option in poll.options" :key="option.id" class="flex flex-col mb-2">
         <div class="flex items-center mb-1">
-          <span class="mr-2">{{ option.title }}</span>
+          <span class="mr-2">{{ option.value }}</span>
           <span class="text-gray-500 ml-auto">{{ option.votes }} votes</span>
         </div>
         <div class="bg-gray-200 w-full">
