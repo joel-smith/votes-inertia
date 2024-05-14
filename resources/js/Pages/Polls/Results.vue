@@ -22,13 +22,21 @@ const optionVotesPercentage = (option) => {
       <li v-for="option in poll.options" :key="option.id" class="flex flex-col mb-2">
         <div class="flex items-center mb-1">
           <span class="mr-2">{{ option.title }}</span>
-          <span class="text-gray-500">{{ option.votes }} votes</span>
+          <span class="text-gray-500 ml-auto">{{ option.votes }} votes</span>
         </div>
         <div class="bg-gray-200 w-full">
-          <div class="bg-blue-500 text-xs leading-none py-1 text-center text-black" :style="{ width: optionVotesPercentage(option) + '%' }">
-            {{ option.votes }} votes ({{ optionVotesPercentage(option).toFixed(1) }}%)
-          </div>
+          <template v-if="optionVotesPercentage(option) > 0">
+            <div class="bg-blue-500 text-xs leading-none py-1 text-center text-black" :style="{ width: optionVotesPercentage(option) + '%' }">
+              {{ option.votes }} votes ({{ optionVotesPercentage(option).toFixed(1) }}%)
+            </div>
+          </template>
+          <template v-else>
+            <div class="bg-gray-100 text-xs leading-none py-1 text-center text-black">
+              {{ option.votes }} votes ({{ optionVotesPercentage(option).toFixed(1) }}%)
+            </div>
+          </template>
         </div>
+
       </li>
     </ul>
     <InertiaLink :href="route('polls.index')" class="text-blue-500 hover:text-blue-700">Back to all polls</InertiaLink>
