@@ -39,7 +39,6 @@ class PollController extends Controller
         }
 
         return Inertia::render('Polls/Show', ['poll' => $poll->load('options')]);
-//        return redirect()->route('polls.show', $poll);
     }
 
     public function show(Poll $poll)

@@ -2,6 +2,8 @@
 
 import {computed} from 'vue';
 import {InertiaLink} from "@inertiajs/inertia-vue3";
+import {Head} from "@inertiajs/vue3";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 const props = defineProps({ poll: Object })
 
@@ -16,6 +18,9 @@ const optionVotesPercentage = (option) => {
 </script>
 
 <template>
+  <Head title="Results" />
+
+  <AuthenticatedLayout>
   <div class="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
     <h1 class="text-xl font-semibold mb-4">{{ poll.title }}</h1>
     <ul>
@@ -42,6 +47,7 @@ const optionVotesPercentage = (option) => {
     <InertiaLink :href="route('polls.index')" class="text-blue-500 hover:text-blue-700 block mb-4">Back to all polls</InertiaLink>
     <InertiaLink :href="route('dashboard')" class="text-blue-500 hover:text-blue-700 block mb-4">Back to Dashboard</InertiaLink>
   </div>
+  </AuthenticatedLayout>
 </template>
 
 <style scoped>
