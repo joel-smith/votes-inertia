@@ -7,8 +7,6 @@ const createPollForm = useForm({
   options: [
     {value: '', errors: null},
     {value: '', errors: null},
-    {value: '', errors: null},
-    {value: '', errors: null},
   ]
 });
 

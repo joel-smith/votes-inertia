@@ -27,6 +27,8 @@ class PollController extends Controller
         ]);
 
         $poll = Poll::create($request->only('title'));
+        $poll->user_id = auth()->user()->id;
+        $poll->save();
 
         foreach ($request->options as $option) {
             Option::create([
@@ -72,9 +74,7 @@ class PollController extends Controller
         $user = auth()->user();
 
         if ($this->isExistingVote($poll)) {
-            return Inertia::render('Polls/Results', [
-                'poll' => $poll->load('options')
-            ]);
+            return redirect()->route('polls.results', $poll);
         }
 
         $option->increment('votes');
@@ -87,10 +87,7 @@ class PollController extends Controller
         ]);
 
         event(new PollVoted($user, $poll, $option));
-
-        return Inertia::render('Polls/Results', [
-            'poll' => $poll->load('options')
-        ]);
+        return redirect()->route('polls.results', $poll);
     }
 
     public function results(Poll $poll)

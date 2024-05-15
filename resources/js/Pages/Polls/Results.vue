@@ -39,7 +39,8 @@ const optionVotesPercentage = (option) => {
 
       </li>
     </ul>
-    <InertiaLink :href="route('polls.index')" class="text-blue-500 hover:text-blue-700">Back to all polls</InertiaLink>
+    <InertiaLink :href="route('polls.index')" class="text-blue-500 hover:text-blue-700 block mb-4">Back to all polls</InertiaLink>
+    <InertiaLink :href="route('dashboard')" class="text-blue-500 hover:text-blue-700 block mb-4">Back to Dashboard</InertiaLink>
   </div>
 </template>
 
