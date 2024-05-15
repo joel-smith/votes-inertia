@@ -35,7 +35,7 @@ const sendVote = () => {
         </label>
       </li>
     </ul>
-    <button @click="vote" :disabled="!selectedOption" class="block w-full py-2 px-4 mt-4 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Vote</button>
+    <button @click="vote" :disabled="!selectedOption" class="block w-full py-2 px-4 mt-4 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:bg-gray-500">Vote</button>
     <small v-if="!selectedOption" class="block text-red-500 mt-2">Please select an option</small>
   </form>
     <InertiaLink :href="route('polls.index')" class="text-blue-500 hover:text-blue-700 block mb-4">Back to all polls</InertiaLink>
