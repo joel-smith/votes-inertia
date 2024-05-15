@@ -121,17 +121,7 @@ class PollControllerTest extends TestCase
 
         $response = $this->postJson(route('polls.vote', [$poll->id, $options[0]->id]));
 
-
-        $response->assertInertia(function ($inertia) use ($poll) {
-            $inertia->component('Polls/Results', [
-                'poll' => $poll,
-            ]);
-        });
-    }
-
-    public function test_user_cannot_vote_on_same_poll_multiple_times()
-    {
-        $this->markTestIncomplete();
+        $response->assertRedirect('/polls/' . $poll->id . '/results/');
     }
 
 }
