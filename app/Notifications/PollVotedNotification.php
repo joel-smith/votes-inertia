@@ -43,7 +43,7 @@ class PollVotedNotification extends Notification
         return (new MailMessage)
                     ->line('Thank you for your vote!')
                     ->line('You voted in the poll: ' . $this->poll->title)
-                    ->line('You chose the option: ' . $this->option->title)
+                    ->line('You chose the option: ' . $this->option->value)
                     ->line('Thank you for using Votes!');
     }
 
