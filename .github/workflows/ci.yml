@@ -33,14 +33,6 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Build Front End
-        run: npm ci && npm run build
-
       - name: Setup .env file
         run: cp .env.example .env
 
