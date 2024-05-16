@@ -56,13 +56,13 @@ const createPoll = () => {
     <div class="text-xl">Add a Poll</div>
 
     <input v-model="createPollForm.title" class="block px-2 py-1.5 bg-gray-100 rounded w-full"
-           placeholder="What is your question?" type="text"/>
+           placeholder="What is your question?" type="text" id="title"/>
     <small class="text-red-500 block" v-if="createPollForm.errors.title">{{ createPollForm.errors.title }}</small>
 
     <div v-for="(option, index) in createPollForm.options" :key="index">
       <div class="flex items-center space-x-2">
         <input v-model="option.value" class="block px-2 py-1.5 bg-gray-100 rounded w-full"
-               :placeholder="'Option ' + (index + 1)" type="text"/>
+               :placeholder="'Option ' + (index + 1)" type="text" :id="'option' + index"/>
 
         <!-- Render '+' button for the last input field -->
         <button type="button" @click="addOption" v-if="index === createPollForm.options.length - 1 && index < maxOptions - 1"
